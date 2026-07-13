@@ -1,0 +1,123 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <random>
+using namespace std;
+void dibujarAhorcado(int intentos, int intentostotales){
+    int errores_reales = intentostotales - intentos;
+    int errores = (errores_reales*6)/intentostotales;
+    if (errores>6) errores=6;
+    cout << " +---+" <<endl;
+    cout << " |   |" <<endl;
+    cout << " |   |" <<endl;
+    switch (errores){
+        case 0:
+        cout<< "    |"<<endl;
+        cout<< "    |"<<endl;
+        cout<< "    |"<<endl;
+        break;
+        case 1:
+        cout<< " O  |"<<endl;
+        cout<< "    |"<<endl;
+        cout<< "    |"<<endl;
+        break;
+        case 2:
+        cout<< " O  |"<<endl;
+        cout<< " |  |"<<endl;
+        cout<< "    |"<<endl;
+        break;
+        case 3:
+        cout<< " O  |"<<endl;
+        cout<< "/|  |"<<endl;
+        cout<< "    |"<<endl;
+        break;
+        case 4:
+        cout<< " O  |"<<endl;
+        cout<< "/|\\ |"<<endl;
+        cout<< "    |"<<endl;
+        break;
+        case 5:
+        cout<< " O  |"<<endl;
+        cout<< "/|\\ |"<<endl;
+        cout<< "/   |"<<endl;
+        break;
+        case 6://como vas a perder xddddddd//
+        cout<< " O  |"<<endl;
+        cout<< "/|\\ |"<<endl;
+        cout<< "/ \\ |"<<endl;
+        break;
+    }
+    cout<<"================"<< endl;
+}
+int main() {
+    vector<string> diccionario={
+        "profesor", "jalado", "elegante", "esternocleidomasoideo","amor","mateco",
+        "calculo", "andi", "ponderado", "ornitorrinco", "otorrinolaringolo", "diccionario", "enciclopedia",
+        "matematica", "caboverde"
+    };
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<>distrib(0,diccionario.size()-1);
+    int indicealeatorio = distrib(gen);
+    string palabraSecreta = diccionario[indicealeatorio];
+    string palabraMostrada(palabraSecreta.length(),'_');
+
+    int intentos = 6;
+    int longitud = palabraSecreta.length();
+    if (longitud>=4 && longitud<=6){
+        intentos = 5;
+    }else if (longitud>=7 && longitud<=9){
+        intentos = 7;
+    }else if (longitud>=10 && longitud<=12){
+        intentos=9;
+    }else if (longitud>=13){
+        intentos=11;
+    }
+    int intentostotales=intentos;
+    
+    char letra;
+    bool acierto;
+
+    cout << "=== JUEGO DEL AHORCADO ===" << endl;
+
+    while (intentos > 0 && palabraMostrada != palabraSecreta) {
+        cout <<"\n";
+        dibujarAhorcado(intentos,intentostotales);
+
+        cout << "\nPalabra: ";
+        for (char c: palabraMostrada){
+            cout<<c << " ";
+        }
+        cout <<endl;
+        cout << "Intentos restantes: " << intentos << endl;
+
+        cout << "Ingresa una letra: ";
+        cin >> letra;
+
+        acierto = false;
+
+        for (int i = 0; i < palabraSecreta.length(); i++) {
+
+            if (palabraSecreta[i] == letra) {
+                palabraMostrada[i] = letra;
+                acierto = true;
+            }
+        }
+
+        if (!acierto) {
+            intentos--;
+            cout << "Letra incorrecta." << endl;
+        }
+    }
+cout <<"\n=== FIN DEL JUEGO ==="<<endl;
+dibujarAhorcado(intentos,intentostotales);
+      if (palabraMostrada == palabraSecreta) {
+        cout << "\n¡Felicidades! Adivinaste la palabra: "
+             << palabraSecreta << endl;
+    } else {
+        cout << "\nPerdiste." << endl;
+        cout << "La palabra era: " << palabraSecreta << endl;
+    }
+
+    return 0;
+}
